@@ -11,6 +11,8 @@ import "package:timezone/timezone.dart" as tz;
 
 import "app.dart";
 import "core/routing/app_navigator_key.dart";
+import "shared/data/database/daos/exercise_dao.dart";
+import "shared/data/services/database_seeder.dart";
 import "shared/data/services/notification_service.dart";
 import "shared/presentation/providers/index.dart";
 
@@ -20,6 +22,11 @@ void main() async {
   // DatabaseService doit être initialisé avant runApp
   await DatabaseService.instance.initialize();
   Log.i("DatabaseService initialisé");
+
+  // Seed Database si besoin
+  await DatabaseSeeder(ExerciseDao(DatabaseService.instance.database))
+      .seedIfNeeded();
+  Log.i("DatabaseSeeder: seed terminé ou déjà effectué");
 
   // SharedPreferences doit être initialisé avant runApp
   final prefs = await SharedPreferences.getInstance();

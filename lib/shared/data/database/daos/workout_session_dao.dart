@@ -22,13 +22,14 @@ class WorkoutSessionDao extends DatabaseAccessor<AppDatabase>
   )..where((table) => table.id.equals(sessionId))).getSingleOrNull();
 
   /// Séance active ou en pause, pour la reprise après fermeture de l'app.
-  Future<WorkoutSession?> findActiveSession() => (select(workoutSessions)..where(
-        (table) => table.status.isInValues([
-          SessionStatus.active,
-          SessionStatus.paused,
-        ]),
-      ))
-      .getSingleOrNull();
+  Future<WorkoutSession?> findActiveSession() =>
+      (select(workoutSessions)..where(
+            (table) => table.status.isInValues([
+              SessionStatus.active,
+              SessionStatus.paused,
+            ]),
+          ))
+          .getSingleOrNull();
 
   Future<void> updateStatus(String id, SessionStatus status) =>
       (update(workoutSessions)..where((table) => table.id.equals(id))).write(
