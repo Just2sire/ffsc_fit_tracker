@@ -1,6 +1,7 @@
 import "package:drift/drift.dart";
 import "package:drift_flutter/drift_flutter.dart";
 
+import "../../domain/enums/index.dart";
 import "daos/index.dart";
 import "tables/index.dart";
 

@@ -20,8 +20,7 @@ class DatabaseSeeder {
     if (prefs.getBool(_seedKey) == true) return;
 
     final raw = await rootBundle.loadString("assets/data/exercises.json");
-    final list = jsonDecode(raw) as List<Map<String, Object?>>;
-    // final list = jsonDecode(raw) as List<dynamic>;
+    final list = jsonDecode(raw) as List<dynamic>;
 
     const uuid = Uuid();
 

@@ -1,7 +1,10 @@
+import "package:fit_tracker/features/exercise_library/presentation/pages/exercise_detail_page.dart";
+import "package:fit_tracker/shared/presentation/widgets/app_scaffold.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
+import "../../features/exercise_library/presentation/pages/exercise_library_page.dart";
 import "../theme/app_colors.dart";
 import "../theme/app_spacing.dart";
 import "app_navigator_key.dart";
@@ -37,6 +40,19 @@ GoRouter appRouter(Ref ref) {
         ),
       ),
 
+      // ─── Exercise ───────────────────────────
+      GoRoute(
+        path: AppRoutes.exerciseDetail,
+        pageBuilder: (context, state) {
+          final id = state.pathParameters["id"] ?? "";
+          return AppTransitions.fade(
+            context: context,
+            state: state,
+            child: ExerciseDetailPage(id: id),
+          );
+        },
+      ),
+
       // ─── Shell — 4 onglets ────────────────────
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
@@ -61,7 +77,8 @@ GoRouter appRouter(Ref ref) {
                 pageBuilder: (context, state) => AppTransitions.fade(
                   context: context,
                   state: state,
-                  child: const _Placeholder(title: "Exercices"),
+                  child: const ExerciseLibraryPage(),
+                  // child: const _Placeholder(title: "Exercices"),
                 ),
               ),
             ],
@@ -159,7 +176,8 @@ class _AppShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
+      padding: .zero,
       body: navigationShell,
       bottomNavigationBar: NavigationBar(
         selectedIndex: navigationShell.currentIndex,

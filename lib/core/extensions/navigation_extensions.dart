@@ -18,6 +18,10 @@ extension NavigationExtensions on BuildContext {
   void goHistory() => go(AppRoutes.history);
   void goProfile() => go(AppRoutes.profile);
 
+  // ─── Exercices ───────────────────────────
+  void pushToExerciseDetail(String id) =>
+      push(AppRoutes.exerciseDetailPath(id));
+
   // ─── Retour ───────────────────────────────
 
   void popScreen<T extends Object?>([T? result]) {
