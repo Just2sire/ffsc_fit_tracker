@@ -1,7 +1,7 @@
 import "package:flutter/foundation.dart";
 
 import "../../../core/configs/logger.dart";
-import "app_database.dart";
+import "../database/app_database.dart";
 
 /// Service général responsable de la gestion et du
 /// cycle de vie de la base de données SQLite (Drift).

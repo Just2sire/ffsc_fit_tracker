@@ -1,6 +1,6 @@
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
-import "../../data/services/app_database.dart";
+import "../../data/database/app_database.dart";
 import "../../data/services/database_service.dart";
 
 part "database_providers.g.dart";
