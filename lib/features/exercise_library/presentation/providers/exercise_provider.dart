@@ -43,30 +43,35 @@ class ExerciseSearchQuery extends _$ExerciseSearchQuery {
 @riverpod
 class MuscleFilter extends _$MuscleFilter {
   @override
-  MuscleGroup? build() => null;
+  Set<MuscleGroup> build() => const {};
 
-  Future<void> set(MuscleGroup? value) async => state = value;
+  Future<void> set(Set<MuscleGroup> value) async => state = value;
+
+  Future<void> clear() async => state = const {};
 }
 
 @riverpod
 class EquipmentFilter extends _$EquipmentFilter {
   @override
-  Equipment? build() => null;
+  Set<Equipment> build() => const {};
 
-  Future<void> set(Equipment? value) async => state = value;
+  Future<void> set(Set<Equipment> value) async => state = value;
+
+  Future<void> clear() async => state = const {};
 }
 
 @riverpod
 Future<List<Exercise>> filteredExercises(Ref ref) async {
   final all = await ref.watch(exercisesListProvider.future);
   final query = ref.watch(exerciseSearchQueryProvider).toLowerCase();
-  final muscle = ref.watch(muscleFilterProvider);
-  final equipment = ref.watch(equipmentFilterProvider);
+  final muscles = ref.watch(muscleFilterProvider);
+  final equipments = ref.watch(equipmentFilterProvider);
 
   return all.where((e) {
     final matchesQuery = query.isEmpty || e.name.toLowerCase().contains(query);
-    final matchesMuscle = muscle == null || e.primaryMuscle == muscle;
-    final matchesEquipment = equipment == null || e.equipment == equipment;
+    final matchesMuscle = muscles.isEmpty || muscles.contains(e.primaryMuscle);
+    final matchesEquipment =
+        equipments.isEmpty || equipments.contains(e.equipment);
     return matchesQuery && matchesMuscle && matchesEquipment;
   }).toList();
 }

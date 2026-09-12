@@ -16,6 +16,9 @@ class ExerciseLibraryPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = context.colorScheme;
     final exercisesAsync = ref.watch(filteredExercisesProvider);
+    final activeFilterCount =
+        ref.watch(muscleFilterProvider).length +
+        ref.watch(equipmentFilterProvider).length;
 
     return AppScaffold(
       body: Column(
@@ -33,20 +36,23 @@ class ExerciseLibraryPage extends ConsumerWidget {
                       .set(value ?? ""),
                 ),
               ),
-              IconButton(
-                style: IconButton.styleFrom(
-                  padding: AppSpacing.insetLg,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: AppSpacing.roundedLg,
+              Badge(
+                label: Text("$activeFilterCount"),
+                isLabelVisible: activeFilterCount > 0,
+                child: IconButton(
+                  style: IconButton.styleFrom(
+                    padding: AppSpacing.insetLg,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: AppSpacing.roundedLg,
+                    ),
+                    backgroundColor: colorScheme.primary,
                   ),
-                  backgroundColor: colorScheme.primary,
+                  onPressed: () => showExerciseFilterSheet(context),
+                  icon: Icon(LucideIcons.filter, color: colorScheme.surface),
                 ),
-                onPressed: () {},
-                icon: Icon(LucideIcons.filter, color: colorScheme.surface,),
               ),
             ],
           ),
-          // const ExerciseFilterBar(),
           Expanded(
             child: exercisesAsync.when(
               data: (exercises) {

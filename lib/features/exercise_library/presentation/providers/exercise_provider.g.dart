@@ -232,7 +232,7 @@ abstract class _$ExerciseSearchQuery extends $Notifier<String> {
 final muscleFilterProvider = MuscleFilterProvider._();
 
 final class MuscleFilterProvider
-    extends $NotifierProvider<MuscleFilter, MuscleGroup?> {
+    extends $NotifierProvider<MuscleFilter, Set<MuscleGroup>> {
   MuscleFilterProvider._()
     : super(
         from: null,
@@ -252,27 +252,27 @@ final class MuscleFilterProvider
   MuscleFilter create() => MuscleFilter();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(MuscleGroup? value) {
+  Override overrideWithValue(Set<MuscleGroup> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<MuscleGroup?>(value),
+      providerOverride: $SyncValueProvider<Set<MuscleGroup>>(value),
     );
   }
 }
 
-String _$muscleFilterHash() => r'9f7b2a9d34d2ed7b934f1ef706f9325e37a1a293';
+String _$muscleFilterHash() => r'91cc3d801142b5368527f72c7a20dc3052e1c8ab';
 
-abstract class _$MuscleFilter extends $Notifier<MuscleGroup?> {
-  MuscleGroup? build();
+abstract class _$MuscleFilter extends $Notifier<Set<MuscleGroup>> {
+  Set<MuscleGroup> build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref = this.ref as $Ref<MuscleGroup?, MuscleGroup?>;
+    final ref = this.ref as $Ref<Set<MuscleGroup>, Set<MuscleGroup>>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<MuscleGroup?, MuscleGroup?>,
-              MuscleGroup?,
+              AnyNotifier<Set<MuscleGroup>, Set<MuscleGroup>>,
+              Set<MuscleGroup>,
               Object?,
               Object?
             >;
@@ -284,7 +284,7 @@ abstract class _$MuscleFilter extends $Notifier<MuscleGroup?> {
 final equipmentFilterProvider = EquipmentFilterProvider._();
 
 final class EquipmentFilterProvider
-    extends $NotifierProvider<EquipmentFilter, Equipment?> {
+    extends $NotifierProvider<EquipmentFilter, Set<Equipment>> {
   EquipmentFilterProvider._()
     : super(
         from: null,
@@ -304,27 +304,27 @@ final class EquipmentFilterProvider
   EquipmentFilter create() => EquipmentFilter();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(Equipment? value) {
+  Override overrideWithValue(Set<Equipment> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<Equipment?>(value),
+      providerOverride: $SyncValueProvider<Set<Equipment>>(value),
     );
   }
 }
 
-String _$equipmentFilterHash() => r'aa18f4bbe26fedd41016fecdc8ab24b00cdb38e2';
+String _$equipmentFilterHash() => r'5c274b4732cb742ccfbac646321d467220f45269';
 
-abstract class _$EquipmentFilter extends $Notifier<Equipment?> {
-  Equipment? build();
+abstract class _$EquipmentFilter extends $Notifier<Set<Equipment>> {
+  Set<Equipment> build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref = this.ref as $Ref<Equipment?, Equipment?>;
+    final ref = this.ref as $Ref<Set<Equipment>, Set<Equipment>>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<Equipment?, Equipment?>,
-              Equipment?,
+              AnyNotifier<Set<Equipment>, Set<Equipment>>,
+              Set<Equipment>,
               Object?,
               Object?
             >;
@@ -369,4 +369,4 @@ final class FilteredExercisesProvider
   }
 }
 
-String _$filteredExercisesHash() => r'b2702e79b82742343372f8b411451e0d5fba7863';
+String _$filteredExercisesHash() => r'8ae13c17ba45f2a37e4ce25b09e59a35a8822956';
