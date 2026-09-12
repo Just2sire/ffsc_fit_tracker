@@ -208,7 +208,7 @@ final class ExerciseSearchQueryProvider
 }
 
 String _$exerciseSearchQueryHash() =>
-    r'd16ddedfc0c2a7fe44ef53f7da83c4e406f2d9eb';
+    r'a1c5f5947d6b5a992629714fd95bf8cae77084f4';
 
 abstract class _$ExerciseSearchQuery extends $Notifier<String> {
   String build();
@@ -260,7 +260,7 @@ final class MuscleFilterProvider
   }
 }
 
-String _$muscleFilterHash() => r'4f6d2bf080bffb3193df722e0fc9999d73bdedc9';
+String _$muscleFilterHash() => r'9f7b2a9d34d2ed7b934f1ef706f9325e37a1a293';
 
 abstract class _$MuscleFilter extends $Notifier<MuscleGroup?> {
   MuscleGroup? build();
@@ -312,7 +312,7 @@ final class EquipmentFilterProvider
   }
 }
 
-String _$equipmentFilterHash() => r'0823946fa559288dfcefccc2860771cd71949391';
+String _$equipmentFilterHash() => r'aa18f4bbe26fedd41016fecdc8ab24b00cdb38e2';
 
 abstract class _$EquipmentFilter extends $Notifier<Equipment?> {
   Equipment? build();
