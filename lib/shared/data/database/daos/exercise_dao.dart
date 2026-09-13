@@ -1,5 +1,6 @@
 import "package:drift/drift.dart";
 
+import "../../../domain/enums/equipment.dart";
 import "../../../domain/enums/muscle_group.dart";
 import "../app_database.dart";
 import "../tables/exercises_table.dart";
@@ -11,7 +12,12 @@ class ExerciseDao extends DatabaseAccessor<AppDatabase>
     with _$ExerciseDaoMixin {
   ExerciseDao(super.db);
 
-  /// Exercices actifs (non archivés), triés par nom.
+  Future<Exercise?> getExerciseById(String id) {
+    return (select(
+      exercises,
+    )..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+  }
+
   Future<List<Exercise>> getAllExercises() {
     return (select(exercises)
           ..where((tbl) => tbl.isArchived.equals(false))
@@ -19,8 +25,6 @@ class ExerciseDao extends DatabaseAccessor<AppDatabase>
         .get();
   }
 
-  /// Recherche par nom sur les exercices actifs (V1 : nom uniquement, pas
-  /// les instructions).
   Future<List<Exercise>> searchExercises(String query) {
     final pattern = "%${query.toLowerCase()}%";
     return (select(exercises)
@@ -32,18 +36,22 @@ class ExerciseDao extends DatabaseAccessor<AppDatabase>
         .get();
   }
 
-  /// Exercices actifs dont le muscle principal (`target`) correspond.
-  Future<List<Exercise>> filterByMuscle(MuscleGroup muscle) {
-    return (select(exercises)..where(
-          (tbl) =>
-              tbl.isArchived.equals(false) &
-              tbl.muscleGroup.equalsValue(muscle),
-        ))
-        .get();
+  Future<List<Exercise>> filterExercises({
+    MuscleGroup? muscle,
+    Equipment? equipment,
+  }) {
+    final query = select(exercises)
+      ..where((tbl) => tbl.isArchived.equals(false));
+    if (muscle != null) {
+      query.where((tbl) => tbl.muscleGroup.equalsValue(muscle));
+    }
+    if (equipment != null) {
+      query.where((tbl) => tbl.equipment.equalsValue(equipment));
+    }
+    query.orderBy([(tbl) => OrderingTerm.asc(tbl.name)]);
+    return query.get();
   }
 
-  /// Insertion en lot au seed initial. `insertOrIgnore` rend l'opération
-  /// idempotente si jamais elle est rejouée (même `id`).
   Future<void> insertBatch(List<Exercise> rows) {
     return batch(
       (b) => b.insertAll(
@@ -54,7 +62,6 @@ class ExerciseDao extends DatabaseAccessor<AppDatabase>
     );
   }
 
-  /// Archive un exercice — jamais de `DELETE` réel sur cette table.
   Future<void> softDelete(String id) {
     return (update(exercises)..where((tbl) => tbl.id.equals(id))).write(
       ExercisesCompanion(

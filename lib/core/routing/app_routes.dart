@@ -11,4 +11,10 @@ class AppRoutes {
   static const String exercises = "/exercises";
   static const String history = "/history";
   static const String profile = "/profile";
+
+  // ─── Exercices ───────────────────────────
+  static String exerciseDetailPath(String id) => "/exercises/$id";
+  static const String exerciseDetail = "/exercises/:id";
+
+
 }

@@ -1,7 +1,12 @@
+import "package:fit_tracker/features/exercise_library/presentation/pages/exercise_detail_page.dart";
+import "package:fit_tracker/shared/presentation/widgets/app_scaffold.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
+import "package:lucide_icons_flutter/lucide_icons.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
+import "../../features/exercise_library/presentation/pages/exercise_library_page.dart";
+import "../../shared/presentation/pages/welcome_page.dart";
 import "../theme/app_colors.dart";
 import "../theme/app_spacing.dart";
 import "app_navigator_key.dart";
@@ -33,8 +38,21 @@ GoRouter appRouter(Ref ref) {
         pageBuilder: (context, state) => AppTransitions.fade(
           context: context,
           state: state,
-          child: const _OnboardingPage(),
+          child: const WelcomePage(),
         ),
+      ),
+
+      // ─── Exercise ───────────────────────────
+      GoRoute(
+        path: AppRoutes.exerciseDetail,
+        pageBuilder: (context, state) {
+          final id = state.pathParameters["id"] ?? "";
+          return AppTransitions.fade(
+            context: context,
+            state: state,
+            child: ExerciseDetailPage(id: id),
+          );
+        },
       ),
 
       // ─── Shell — 4 onglets ────────────────────
@@ -61,7 +79,8 @@ GoRouter appRouter(Ref ref) {
                 pageBuilder: (context, state) => AppTransitions.fade(
                   context: context,
                   state: state,
-                  child: const _Placeholder(title: "Exercices"),
+                  child: const ExerciseLibraryPage(),
+                  // child: const _Placeholder(title: "Exercices"),
                 ),
               ),
             ],
@@ -96,46 +115,6 @@ GoRouter appRouter(Ref ref) {
   );
 }
 
-/// Onboarding — placeholder, un seul écran avec un bouton pour continuer.
-class _OnboardingPage extends StatelessWidget {
-  const _OnboardingPage();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: AppSpacing.screenPaddingH,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: .center,
-              children: [
-                Text(
-                  "Bienvenue sur FitTracker",
-                  style: Theme.of(context).textTheme.headlineSmall,
-                  textAlign: TextAlign.center,
-                ),
-                AppSpacing.gapVSm,
-                Text(
-                  "Onboarding — bientôt.",
-                  style: Theme.of(context).textTheme.bodyMedium
-                      ?.copyWith(color: AppColors.textSecondary),
-                  textAlign: TextAlign.center,
-                ),
-                AppSpacing.gapVXxl,
-                ElevatedButton(
-                  onPressed: () => context.go(AppRoutes.home),
-                  child: const Text("Continuer"),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 /// Coquille des 4 onglets — placeholder texte centré par onglet.
 class _AppShell extends StatelessWidget {
   const _AppShell({required this.navigationShell});
@@ -143,23 +122,32 @@ class _AppShell extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 
   static const _destinations = [
-    (icon: Icons.home_outlined, selectedIcon: Icons.home, label: "Accueil"),
     (
-      icon: Icons.fitness_center_outlined,
-      selectedIcon: Icons.fitness_center,
+      icon: LucideIcons.house,
+      selectedIcon: LucideIcons.house,
+      label: "Accueil",
+    ),
+    (
+      icon: LucideIcons.dumbbell,
+      selectedIcon: LucideIcons.dumbbell,
       label: "Exercices",
     ),
     (
-      icon: Icons.history_outlined,
-      selectedIcon: Icons.history,
+      icon: LucideIcons.rotateCcwClock,
+      selectedIcon: LucideIcons.rotateCcwClock,
       label: "Historique",
     ),
-    (icon: Icons.person_outline, selectedIcon: Icons.person, label: "Profil"),
+    (
+      icon: LucideIcons.userRound,
+      selectedIcon: LucideIcons.userRound,
+      label: "Profil",
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
+      padding: .zero,
       body: navigationShell,
       bottomNavigationBar: NavigationBar(
         selectedIndex: navigationShell.currentIndex,
@@ -215,7 +203,7 @@ class _RouterErrorPage extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.of(context).maybePop(),
-          icon: const Icon(Icons.arrow_back_ios_new),
+          icon: const Icon(LucideIcons.arrowLeft),
         ),
       ),
       body: Center(

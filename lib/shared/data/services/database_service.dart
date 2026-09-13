@@ -61,9 +61,16 @@ class DatabaseService {
     try {
       AppLogger.d("[DatabaseService] Initialisation de la base de données...");
       final db = database;
-      // Exécution d'une vérification basique pour
-      //confirmer l'ouverture du fichier
       await db.customSelect("SELECT 1").getSingle();
+      final tables = await db.customSelect(
+        "SELECT name FROM sqlite_master WHERE type='table'",
+      ).get();
+      if (tables.isEmpty) {
+        throw StateError(
+          "[DatabaseService] Le fichier de base de données existe mais "
+          "ne contient aucune table. Effacez les données de l'application.",
+        );
+      }
       AppLogger.i(
         "[DatabaseService] Base de données initialisée avec "
         "succès (schema v${db.schemaVersion}).",
