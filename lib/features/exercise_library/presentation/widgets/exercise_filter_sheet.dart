@@ -2,9 +2,9 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 import "../../../../core/extensions/build_context_extensions.dart";
+import "../../../../core/extensions/string_extensions.dart";
 import "../../../../core/theme/app_spacing.dart";
-import "../../../../shared/domain/enums/equipment.dart";
-import "../../../../shared/domain/enums/muscle_group.dart";
+import "../../../../shared/domain/enums/index.dart" show Equipment, MuscleGroup;
 import "../../../../shared/presentation/widgets/app_text_form_field.dart";
 import "../providers/exercise_provider.dart";
 
@@ -12,6 +12,7 @@ import "../providers/exercise_provider.dart";
 Future<void> showExerciseFilterSheet(BuildContext context) {
   return showModalBottomSheet<void>(
     context: context,
+    useRootNavigator: true,
     isScrollControlled: true,
     useSafeArea: true,
     backgroundColor: Colors.transparent,
@@ -66,7 +67,11 @@ class _ExerciseFilterSheetState extends ConsumerState<ExerciseFilterSheet>
       maxChildSize: 0.95,
       expand: false,
       builder: (context, scrollController) {
-        return DecoratedBox(
+        return Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.sm,
+            vertical: AppSpacing.md,
+          ),
           decoration: BoxDecoration(
             color: colorScheme.surface,
             borderRadius: AppSpacing.roundedTopXl,
@@ -75,31 +80,26 @@ class _ExerciseFilterSheetState extends ConsumerState<ExerciseFilterSheet>
             children: [
               AppSpacing.gapVSm,
               Container(
-                width: 40,
-                height: 4,
+                width: AppSpacing.huge,
+                height: AppSpacing.xs,
                 decoration: BoxDecoration(
                   color: colorScheme.outlineVariant,
                   borderRadius: AppSpacing.roundedFull,
                 ),
               ),
-              Padding(
-                padding: AppSpacing.screenPaddingH.copyWith(
-                  top: AppSpacing.md,
-                ),
-                child: Row(
-                  children: [
-                    Text("Filtres", style: textTheme.titleMedium),
-                    const Spacer(),
-                    if (_totalSelected > 0)
-                      TextButton(
-                        onPressed: () => setState(() {
-                          _muscles.clear();
-                          _equipments.clear();
-                        }),
-                        child: const Text("Réinitialiser"),
-                      ),
-                  ],
-                ),
+              Row(
+                children: [
+                  Text("Filtres", style: textTheme.titleMedium),
+                  const Spacer(),
+                  if (_totalSelected > 0)
+                    TextButton(
+                      onPressed: () => setState(() {
+                        _muscles.clear();
+                        _equipments.clear();
+                      }),
+                      child: const Text("Réinitialiser"),
+                    ),
+                ],
               ),
               TabBar(
                 controller: _tabController,
@@ -142,26 +142,18 @@ class _ExerciseFilterSheetState extends ConsumerState<ExerciseFilterSheet>
                   ],
                 ),
               ),
-              Padding(
-                padding: AppSpacing.screenPaddingH.copyWith(
-                  top: AppSpacing.sm,
-                  bottom: AppSpacing.lg,
-                ),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: () {
-                      ref.read(muscleFilterProvider.notifier).set(_muscles);
-                      ref
-                          .read(equipmentFilterProvider.notifier)
-                          .set(_equipments);
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      _totalSelected == 0
-                          ? "Appliquer"
-                          : "Appliquer ($_totalSelected)",
-                    ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    ref.read(muscleFilterProvider.notifier).set(_muscles);
+                    ref.read(equipmentFilterProvider.notifier).set(_equipments);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    _totalSelected == 0
+                        ? "Appliquer"
+                        : "Appliquer ($_totalSelected)",
                   ),
                 ),
               ),
@@ -223,7 +215,7 @@ class _FilterList<T> extends StatelessWidget {
                     return CheckboxListTile(
                       value: isSelected,
                       onChanged: (_) => onToggle(value),
-                      title: Text(labelOf(value)),
+                      title: Text(labelOf(value).capitalize),
                       controlAffinity: ListTileControlAffinity.leading,
                       dense: true,
                     );

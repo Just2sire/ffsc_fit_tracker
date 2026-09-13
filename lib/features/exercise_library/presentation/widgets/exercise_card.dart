@@ -35,30 +35,27 @@ class ExerciseCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: .start,
           children: [
-            SizedBox(
-              width: double.infinity,
-              child: Hero(
-                tag: exercise.id,
-                child: ClipRRect(
-                  borderRadius: AppSpacing.roundedLg,
-                  child: Image.asset(
-                    exercise.imageAsset,
-                    fit: .fitWidth,
-                    errorBuilder: (context, error, stackTrace) {
-                      return ColoredBox(
-                        color: colorScheme.surfaceContainerHighest,
-                        child: Icon(
-                          LucideIcons.sportShoe,
-                          size: AppSpacing.iconXl,
-                          color: colorScheme.primary,
-                        ),
-                      );
-                    },
-                  ),
+            Hero(
+              tag: exercise.id,
+              child: ClipRRect(
+                borderRadius: AppSpacing.roundedLg,
+                child: Image.asset(
+                  exercise.imageAsset,
+                  fit: .fitWidth,
+                  errorBuilder: (context, error, stackTrace) {
+                    return ColoredBox(
+                      color: colorScheme.surfaceContainerHighest,
+                      child: Icon(
+                        LucideIcons.sportShoe,
+                        size: AppSpacing.iconXl,
+                        color: colorScheme.primary,
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
-            Padding(
+            Container(
               padding: const EdgeInsetsGeometry.symmetric(
                 horizontal: AppSpacing.sm,
                 vertical: AppSpacing.xs,
@@ -96,46 +93,5 @@ class ExerciseCard extends StatelessWidget {
         ),
       ),
     );
-    // return InkWell(
-    //   onTap: onTap,
-    //   borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-    //   child: Container(
-    //     padding: AppSpacing.cardPadding,
-    //     decoration: BoxDecoration(
-    //       color: colorScheme.surfaceContainerLow,
-    //       borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-    //     ),
-    //     child: Row(
-    //       children: [
-    //         ClipRRect(
-    //           borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-    //           child: Image.asset(
-    //             exercise.imageAsset,
-    //             width: 56,
-    //             height: 56,
-    //             fit: BoxFit.cover,
-    //           ),
-    //         ),
-    //         AppSpacing.gapHMd,
-    //         Expanded(
-    //           child: Column(
-    //             crossAxisAlignment: CrossAxisAlignment.start,
-    //             children: [
-    //               Text(exercise.name, style: context.textTheme.titleMedium),
-    //               AppSpacing.gapVXs,
-    //               Text(
-    //                 exercise.primaryMuscle.label,
-    //                 style: context.textTheme.bodyMedium?.copyWith(
-    //                   color: colorScheme.onSurfaceVariant,
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //         Icon(Icons.chevron_right, color: colorScheme.outlineVariant),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }
