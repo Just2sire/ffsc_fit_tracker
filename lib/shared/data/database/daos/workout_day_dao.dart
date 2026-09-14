@@ -19,8 +19,8 @@ class WorkoutDayDao extends DatabaseAccessor<AppDatabase>
         .watch();
   }
 
-  Future<void> upsertDay(WorkoutDay day) =>
-      into(workoutDays).insertOnConflictUpdate(day);
+  Future<void> upsertDay(WorkoutDaysCompanion companion) =>
+      into(workoutDays).insertOnConflictUpdate(companion);
 
   /// Archive un jour — jamais de `DELETE` réel sur cette table (l'historique
   /// des séances doit rester lisible même après suppression du jour).

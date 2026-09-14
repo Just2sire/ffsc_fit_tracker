@@ -17,8 +17,11 @@ class ProgramExerciseDao extends DatabaseAccessor<AppDatabase>
             ..orderBy([(table) => OrderingTerm.asc(table.sortOrder)]))
           .get();
 
-  Future<void> insertProgramExercise(ProgramExercise programExercise) =>
-      into(programExercises).insert(programExercise);
+  Future<void> insertProgramExercise(ProgramExercisesCompanion companion) =>
+      into(programExercises).insert(companion);
+
+  Future<void> upsertProgramExercise(ProgramExercisesCompanion companion) =>
+      into(programExercises).insertOnConflictUpdate(companion);
 
   Future<void> deleteProgramExercise(String workoutDayId, String exerciseId) =>
       (delete(programExercises)

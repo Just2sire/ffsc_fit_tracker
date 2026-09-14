@@ -11,10 +11,7 @@ class AddExerciseToDayUseCase {
       programExercise.targetRepsMin <= programExercise.targetRepsMax,
       "targetRepsMin must be <= targetRepsMax",
     );
-    assert(
-      programExercise.targetSets >= 1,
-      "targetSets must be >= 1",
-    );
+    assert(programExercise.targetSets >= 1, "targetSets must be >= 1");
     return repository.addExerciseToDay(programExercise);
   }
 }

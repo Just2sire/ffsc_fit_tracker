@@ -1,8 +1,7 @@
-import "package:fit_tracker/features/exercise_library/data/datasources/exercise_local_datasource.dart";
-import "package:fit_tracker/features/exercise_library/domain/entities/exercise.dart";
-import "package:fit_tracker/features/exercise_library/domain/repositories/exercise_repository.dart";
-import "package:fit_tracker/shared/domain/enums/equipment.dart";
-import "package:fit_tracker/shared/domain/enums/muscle_group.dart";
+import "../../../../shared/domain/enums/index.dart" show MuscleGroup, Equipment;
+import "../../domain/entities/exercise.dart";
+import "../../domain/repositories/exercise_repository.dart";
+import "../datasources/exercise_local_datasource.dart";
 
 class ExerciseRepositoryImpl implements ExerciseRepository {
   const ExerciseRepositoryImpl(this.datasource);
