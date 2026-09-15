@@ -31,7 +31,6 @@ class ProgramListPage extends ConsumerWidget {
         icon: const Icon(LucideIcons.plus, size: AppSpacing.iconLg),
       ),
       body: Column(
-        spacing: AppSpacing.md,
         children: [
           const AppTopbar(title: "Programmes"),
           Expanded(
