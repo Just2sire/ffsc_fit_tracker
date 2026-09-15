@@ -48,7 +48,7 @@ class ExerciseCard extends StatelessWidget {
                       child: Icon(
                         LucideIcons.sportShoe,
                         size: AppSpacing.iconXl,
-                        color: colorScheme.primary,
+                        color: colorScheme.accentForeground,
                       ),
                     );
                   },

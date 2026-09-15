@@ -107,9 +107,8 @@ extension BuildContextExtensions on BuildContext {
       builder: (context) => AlertDialog(
         title: Text(
           title,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium
+              ?.copyWith(fontWeight: FontWeight.w600),
         ),
         content: Text(
           content,
@@ -150,14 +149,10 @@ extension BuildContextExtensions on BuildContext {
       builder: (context) => AlertDialog(
         title: Text(
           title,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium
+              ?.copyWith(fontWeight: FontWeight.w600),
         ),
-        content: Text(
-          content,
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
+        content: Text(content, style: Theme.of(context).textTheme.bodyMedium),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -167,4 +162,11 @@ extension BuildContextExtensions on BuildContext {
       ),
     );
   }
+}
+
+extension ColorSchemeAccent on ColorScheme {
+  /// Accent lisible en light ET dark.
+  /// Light → olive sombre #7C8A00 | Dark → lime #E1FF12
+  Color get accentForeground =>
+      brightness == Brightness.light ? AppColors.textAccent : primary;
 }

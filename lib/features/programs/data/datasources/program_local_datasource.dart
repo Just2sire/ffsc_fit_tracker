@@ -58,6 +58,9 @@ class ProgramLocalDatasource {
         ),
       );
 
+  Stream<int> watchTotalDaysCount() =>
+      _database.workoutDayDao.watchTotalDaysCount();
+
   Future<void> deleteDay(String id) => _database.workoutDayDao.softDelete(id);
 
   // ─── ProgramExercise ─────────────────────────────────

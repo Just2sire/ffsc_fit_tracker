@@ -22,6 +22,13 @@ extension NavigationExtensions on BuildContext {
   void pushToExerciseDetail(String id) =>
       push(AppRoutes.exerciseDetailPath(id));
 
+  // ─── Programmes ──────────────────────────
+  void pushToPrograms() => push(AppRoutes.programs);
+  void pushToProgramDetail(String id) =>
+      push(AppRoutes.programDetailPath(id));
+  void pushToProgramNew() => push(AppRoutes.programNew);
+  void pushToProgramEdit(String id) => push(AppRoutes.programEditPath(id));
+
   // ─── Retour ───────────────────────────────
 
   void popScreen<T extends Object?>([T? result]) {

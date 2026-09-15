@@ -30,6 +30,9 @@ class ProgramRepositoryImpl implements ProgramRepository {
       datasource.watchProgramDays(programId);
 
   @override
+  Stream<int> watchTotalDaysCount() => datasource.watchTotalDaysCount();
+
+  @override
   Future<void> saveDay(WorkoutDay day) => datasource.saveDay(day);
 
   @override

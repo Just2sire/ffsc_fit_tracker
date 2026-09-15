@@ -4,11 +4,6 @@ import "package:lucide_icons_flutter/lucide_icons.dart";
 import "../../../../core/extensions/build_context_extensions.dart";
 import "../../../../core/theme/app_spacing.dart";
 
-/// Top bar MagiCarré — deux variantes visuelles :
-///
-/// - **Racine** (`centerTitle: false`) : titre à gauche, actions à droite,
-///   pas de bordure inférieure au repos.
-/// - **Poussée** (`showLeading: true`) : bouton retour, titre optionnel.
 class AppTopbar extends StatelessWidget {
   const AppTopbar({
     required this.title,
@@ -24,7 +19,7 @@ class AppTopbar extends StatelessWidget {
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
     this.showLeading = true,
     this.centerTitle = false,
-    this.padding = .zero,
+    this.padding = const EdgeInsets.only(bottom: AppSpacing.sm),
     this.leadingButtonTooltip,
     this.height,
     super.key,
@@ -62,7 +57,6 @@ class AppTopbar extends StatelessWidget {
       child: Padding(
         padding: padding,
         child: Row(
-          crossAxisAlignment: .start,
           mainAxisAlignment: centerTitle
               ? mainAxisAlignment
               : .start,
@@ -80,7 +74,7 @@ class AppTopbar extends StatelessWidget {
                       },
                       child: Icon(
                         LucideIcons.arrowLeft,
-                        size: AppSpacing.iconXl,
+                        size: AppSpacing.iconLg,
                         color: context.isDarkMode
                             ? theme.colorScheme.primary
                             : theme.colorScheme.onSurface,

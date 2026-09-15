@@ -19,6 +19,8 @@ abstract class ProgramRepository {
 
   Stream<List<WorkoutDay>> watchProgramDays(String programId);
 
+  Stream<int> watchTotalDaysCount();
+
   Future<void> saveDay(WorkoutDay day);
 
   Future<void> deleteDay(String id);

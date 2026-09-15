@@ -1,12 +1,16 @@
-import "package:fit_tracker/features/exercise_library/presentation/pages/exercise_detail_page.dart";
-import "package:fit_tracker/shared/presentation/widgets/app_scaffold.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 import "package:lucide_icons_flutter/lucide_icons.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
+import "../../features/exercise_library/presentation/pages/exercise_detail_page.dart";
 import "../../features/exercise_library/presentation/pages/exercise_library_page.dart";
+import "../../features/home/presentation/pages/home_page.dart";
+import "../../features/programs/presentation/pages/program_detail_page.dart";
+import "../../features/programs/presentation/pages/program_editor_page.dart";
+import "../../features/programs/presentation/pages/program_list_page.dart";
 import "../../shared/presentation/pages/welcome_page.dart";
+import "../../shared/presentation/widgets/app_scaffold.dart";
 import "../theme/app_colors.dart";
 import "../theme/app_spacing.dart";
 import "app_navigator_key.dart";
@@ -55,6 +59,46 @@ GoRouter appRouter(Ref ref) {
         },
       ),
 
+      // ─── Programmes (hors shell) ─────────────
+      GoRoute(
+        path: AppRoutes.programs,
+        pageBuilder: (context, state) => AppTransitions.pushedScreen(
+          context: context,
+          state: state,
+          child: const ProgramListPage(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.programNew,
+        pageBuilder: (context, state) => AppTransitions.pushedScreen(
+          context: context,
+          state: state,
+          child: const ProgramEditorPage(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.programEdit,
+        pageBuilder: (context, state) {
+          final id = state.pathParameters["id"] ?? "";
+          return AppTransitions.pushedScreen(
+            context: context,
+            state: state,
+            child: ProgramEditorPage(programId: id),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.programDetail,
+        pageBuilder: (context, state) {
+          final id = state.pathParameters["id"] ?? "";
+          return AppTransitions.pushedScreen(
+            context: context,
+            state: state,
+            child: ProgramDetailPage(id: id),
+          );
+        },
+      ),
+
       // ─── Shell — 4 onglets ────────────────────
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
@@ -67,7 +111,7 @@ GoRouter appRouter(Ref ref) {
                 pageBuilder: (context, state) => AppTransitions.fade(
                   context: context,
                   state: state,
-                  child: const _Placeholder(title: "Accueil"),
+                  child: const HomePage(),
                 ),
               ),
             ],
@@ -125,7 +169,7 @@ class _AppShell extends StatelessWidget {
     (
       icon: LucideIcons.house,
       selectedIcon: LucideIcons.house,
-      label: "Accueil",
+      label: "Home",
     ),
     (
       icon: LucideIcons.dumbbell,

@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 
+import "../../../../core/extensions/build_context_extensions.dart";
 import "../../../../core/theme/app_spacing.dart";
 
 class AppTextFormField extends StatelessWidget {
@@ -123,7 +124,7 @@ class AppTextFormField extends StatelessWidget {
           autofocus: autoFocus,
           maxLines: maxLines,
           readOnly: readOnly,
-          cursorColor: colorScheme.primary,
+          cursorColor: colorScheme.accentForeground,
           validator: (value) {
             if (!shouldValidate) return null;
             if (isRequired && (value ?? "").trim().isEmpty) {
