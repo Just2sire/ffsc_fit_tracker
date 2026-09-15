@@ -16,5 +16,11 @@ class AppRoutes {
   static String exerciseDetailPath(String id) => "/exercises/$id";
   static const String exerciseDetail = "/exercises/:id";
 
-
+  // ─── Programmes ──────────────────────────
+  static const String programs = "/programs";
+  static const String programNew = "/programs/new";
+  static const String programDetail = "/programs/:id";
+  static String programDetailPath(String id) => "/programs/$id";
+  static const String programEdit = "/programs/:id/edit";
+  static String programEditPath(String id) => "/programs/$id/edit";
 }

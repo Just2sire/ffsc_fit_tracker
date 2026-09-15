@@ -25,8 +25,8 @@ class WorkoutProgramDao extends DatabaseAccessor<AppDatabase>
     workoutPrograms,
   )..where((table) => table.id.equals(id))).getSingleOrNull();
 
-  Future<void> upsertProgram(WorkoutProgram program) =>
-      into(workoutPrograms).insertOnConflictUpdate(program);
+  Future<void> upsertProgram(WorkoutProgramsCompanion companion) =>
+      into(workoutPrograms).insertOnConflictUpdate(companion);
 
   /// Archive un programme — jamais de `DELETE` réel (l'historique des
   /// séances doit continuer à référencer le programme après suppression).

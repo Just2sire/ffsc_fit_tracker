@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 
+import "../../../../core/extensions/build_context_extensions.dart";
 import "../../../../core/theme/app_spacing.dart";
 
 class AppDivider extends StatelessWidget {
@@ -42,7 +43,7 @@ class AppDivider extends StatelessWidget {
     final leftFlex = adjustedTextPosition.round();
     final rightFlex = (100 - adjustedTextPosition).round();
     
-    final primaryColor = theme.colorScheme.primary;
+    final primaryColor = theme.colorScheme.accentForeground;
 
     return Container(
       margin: margin,

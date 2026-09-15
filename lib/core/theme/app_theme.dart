@@ -166,7 +166,7 @@ class AppTheme {
 
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: lightColorScheme.primary,
+        foregroundColor: AppColors.textAccent,
         minimumSize: const Size(0, AppSpacing.buttonHeightLg),
         shape: shapeSmall,
         textStyle: _buttonText,
@@ -282,7 +282,7 @@ class AppTheme {
 
     // ─── Icon ───────────────────────────────────────
     iconTheme: IconThemeData(
-      color: lightColorScheme.primary,
+      color: lightColorScheme.onSurface,
       size: AppSpacing.iconLg,
     ),
 

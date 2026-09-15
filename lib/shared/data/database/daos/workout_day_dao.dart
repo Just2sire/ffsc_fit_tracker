@@ -19,8 +19,16 @@ class WorkoutDayDao extends DatabaseAccessor<AppDatabase>
         .watch();
   }
 
-  Future<void> upsertDay(WorkoutDay day) =>
-      into(workoutDays).insertOnConflictUpdate(day);
+  Future<void> upsertDay(WorkoutDaysCompanion companion) =>
+      into(workoutDays).insertOnConflictUpdate(companion);
+
+  /// Nombre total de jours actifs (toutes programmes confondus).
+  Stream<int> watchTotalDaysCount() {
+    return (select(workoutDays)
+          ..where((table) => table.isArchived.equals(false)))
+        .watch()
+        .map((rows) => rows.length);
+  }
 
   /// Archive un jour — jamais de `DELETE` réel sur cette table (l'historique
   /// des séances doit rester lisible même après suppression du jour).
