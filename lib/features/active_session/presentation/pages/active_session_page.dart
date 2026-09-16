@@ -8,12 +8,15 @@ import "../../../../core/extensions/duration_extensions.dart";
 import "../../../../core/extensions/string_extensions.dart";
 import "../../../../core/theme/app_spacing.dart";
 import "../../../../shared/domain/enums/index.dart";
+import "../../../../shared/presentation/providers/notification_providers.dart";
 import "../../../../shared/presentation/widgets/index.dart" show AppScaffold;
 import "../../domain/entities/exercise_set.dart";
 import "../../domain/entities/progression_suggestion.dart";
 import "../../domain/entities/workout_session.dart";
 import "../providers/active_exercise_providers.dart";
 import "../providers/active_session_notifier.dart";
+import "../providers/rest_timer_notifier.dart";
+import "../widgets/rest_timer_overlay.dart";
 
 class ActiveSessionPage extends ConsumerStatefulWidget {
   const ActiveSessionPage({super.key, this.workoutDayId});
@@ -31,11 +34,14 @@ class _ActiveSessionPageState extends ConsumerState<ActiveSessionPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _onFirstFrame());
+  }
+
+  Future<void> _onFirstFrame() async {
+    await ref.read(notificationServiceProvider).requestPermission();
     final workoutDayId = widget.workoutDayId;
     if (workoutDayId != null) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _startIfNeeded(workoutDayId),
-      );
+      await _startIfNeeded(workoutDayId);
     }
   }
 
@@ -71,23 +77,28 @@ class _SessionScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _TopBarSection(session: session),
-            AppSpacing.gapVMd,
-            const _ProgressSection(),
-            AppSpacing.gapVMd,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _TopBarSection(session: session),
+                AppSpacing.gapVMd,
+                const _ProgressSection(),
+                AppSpacing.gapVMd,
+              ],
+            ),
+            const Divider(thickness: 1, height: 1),
+            const Expanded(child: _ExerciseWorkspaceSection()),
+            const Divider(thickness: 1, height: 1),
+            const _NavigatorSection(),
+            _FinishButton(session: session),
+            AppSpacing.gapVSm,
           ],
         ),
-        const Divider(thickness: 1, height: 1),
-        const Expanded(child: _ExerciseWorkspaceSection()),
-        const Divider(thickness: 1, height: 1),
-        const _NavigatorSection(),
-        _FinishButton(session: session),
-        AppSpacing.gapVSm,
+        const RestTimerOverlay(),
       ],
     );
   }
@@ -148,6 +159,7 @@ class _PlayPauseButton extends ConsumerStatefulWidget {
 class _PlayPauseButtonState extends ConsumerState<_PlayPauseButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
+  bool _isToggling = false;
 
   @override
   void initState() {
@@ -165,13 +177,18 @@ class _PlayPauseButtonState extends ConsumerState<_PlayPauseButton>
   }
 
   Future<void> _toggle(SessionStatus status) async {
-    final notifier = ref.read(activeSessionProvider.notifier);
-    if (status == SessionStatus.active) {
-      await _controller.animateTo(1);
-      await notifier.pause();
-    } else if (status == SessionStatus.paused) {
-      await _controller.animateTo(0);
-      await notifier.resume();
+    setState(() => _isToggling = true);
+    try {
+      final notifier = ref.read(activeSessionProvider.notifier);
+      if (status == SessionStatus.active) {
+        await _controller.animateTo(1);
+        await notifier.pause();
+      } else if (status == SessionStatus.paused) {
+        await _controller.animateTo(0);
+        await notifier.resume();
+      }
+    } finally {
+      if (mounted) setState(() => _isToggling = false);
     }
   }
 
@@ -186,7 +203,7 @@ class _PlayPauseButtonState extends ConsumerState<_PlayPauseButton>
         backgroundColor: context.colorScheme.outline,
         fixedSize: const Size(AppSpacing.mega, AppSpacing.mega),
       ),
-      onPressed: status == null ? null : () => _toggle(status),
+      onPressed: (status == null || _isToggling) ? null : () => _toggle(status),
       icon: AnimatedIcon(icon: AnimatedIcons.pause_play, progress: _controller),
     );
   }
@@ -487,6 +504,17 @@ class _SetRowState extends ConsumerState<_SetRow> {
             completedAt: DateTime.now(),
           ),
         );
+
+    final exercise = ref.read(currentSessionExerciseProvider).value;
+    final target = ref.read(currentExerciseTargetProvider).value;
+    if (exercise != null && target != null && target.restTimeSeconds > 0) {
+      await ref
+          .read(restTimerProvider.notifier)
+          .start(
+            Duration(seconds: target.restTimeSeconds),
+            exerciseName: exercise.exerciseNameSnapshot,
+          );
+    }
   }
 
   Future<void> _unvalidate() => ref

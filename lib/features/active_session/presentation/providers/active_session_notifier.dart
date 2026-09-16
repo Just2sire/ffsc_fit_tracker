@@ -67,12 +67,11 @@ class ActiveSessionNotifier extends _$ActiveSessionNotifier {
   }
 
   Future<void> start(String workoutDayId) async {
+    if (state.isLoading) return;
     final repository = ref.read(sessionRepositoryProvider);
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      final session = await StartSessionUseCase(repository).call(
-        workoutDayId,
-      );
+      final session = await StartSessionUseCase(repository).call(workoutDayId);
       _startHeartbeat();
       return session;
     });
@@ -103,6 +102,7 @@ class ActiveSessionNotifier extends _$ActiveSessionNotifier {
     transition, {
     required void Function() onSuccess,
   }) async {
+    if (state.isLoading) return;
     final current = state.value;
     if (current == null) return;
 
