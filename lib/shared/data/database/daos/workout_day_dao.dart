@@ -10,6 +10,10 @@ class WorkoutDayDao extends DatabaseAccessor<AppDatabase>
     with _$WorkoutDayDaoMixin {
   WorkoutDayDao(super.db);
 
+  Future<WorkoutDay?> getDayById(String id) => (select(
+    workoutDays,
+  )..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+
   /// Jours actifs d'un programme donné (non archivés), triés par jour.
   Stream<List<WorkoutDay>> watchProgramDays(String programId) {
     return (select(workoutDays)
