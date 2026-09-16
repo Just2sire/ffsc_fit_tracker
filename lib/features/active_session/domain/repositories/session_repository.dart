@@ -6,6 +6,7 @@ import "package:fit_tracker/features/active_session/domain/entities/workout_sess
 abstract class SessionRepository {
   Future<WorkoutSession?> findActiveSession();
   Future<WorkoutSession?> getSessionById(String id);
+  Stream<List<WorkoutSession>> watchCompletedSessions();
 
   Future<WorkoutSession> startSession(String workoutDayId);
   Future<WorkoutSession> pauseSession(String id);

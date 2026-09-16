@@ -95,6 +95,52 @@ final class PendingRecoveryProvider
 
 String _$pendingRecoveryHash() => r'54b9c26075c73e7cfd3c4182b1ece6d5a01dedba';
 
+/// Séances terminées, les plus récentes en premier — pour l'historique.
+
+@ProviderFor(completedSessions)
+final completedSessionsProvider = CompletedSessionsProvider._();
+
+/// Séances terminées, les plus récentes en premier — pour l'historique.
+
+final class CompletedSessionsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<WorkoutSession>>,
+          List<WorkoutSession>,
+          Stream<List<WorkoutSession>>
+        >
+    with
+        $FutureModifier<List<WorkoutSession>>,
+        $StreamProvider<List<WorkoutSession>> {
+  /// Séances terminées, les plus récentes en premier — pour l'historique.
+  CompletedSessionsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'completedSessionsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$completedSessionsHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<List<WorkoutSession>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<WorkoutSession>> create(Ref ref) {
+    return completedSessions(ref);
+  }
+}
+
+String _$completedSessionsHash() => r'171b1c1b300140773dc08cdf3efbdba172c424e0';
+
 @ProviderFor(sessionElapsedTime)
 final sessionElapsedTimeProvider = SessionElapsedTimeProvider._();
 
@@ -155,7 +201,7 @@ final class ActiveSessionNotifierProvider
 }
 
 String _$activeSessionNotifierHash() =>
-    r'59814b84c29b99bf69d4e7548f3aeb7798a3d8b5';
+    r'e0b38ade2d155d5f598bfa55c76538d587592461';
 
 abstract class _$ActiveSessionNotifier extends $AsyncNotifier<WorkoutSession?> {
   FutureOr<WorkoutSession?> build();

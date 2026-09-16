@@ -25,6 +25,11 @@ class SessionLocalDatasource {
     return row == null ? null : _sessionToDomain(row);
   }
 
+  Stream<List<entity.WorkoutSession>> watchCompletedSessions() => _database
+      .workoutSessionDao
+      .watchCompletedSessions()
+      .map((rows) => rows.map(_sessionToDomain).toList());
+
   Future<entity.WorkoutSession> startSession(String workoutDayId) async {
     final day = await _database.workoutDayDao.getDayById(workoutDayId);
     if (day == null) {

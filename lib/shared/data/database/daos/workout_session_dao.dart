@@ -57,21 +57,29 @@ class WorkoutSessionDao extends DatabaseAccessor<AppDatabase>
   Future<void> resumeFromPause(
     String id, {
     required int pausedDurationSeconds,
-  }) => (update(workoutSessions)..where((table) => table.id.equals(id)))
-      .write(
-        WorkoutSessionsCompanion(
-          status: const Value(SessionStatus.active),
-          pausedDuration: Value(pausedDurationSeconds),
-          lastActiveAt: Value(DateTime.now()),
-          updatedAt: Value(DateTime.now()),
-        ),
-      );
+  }) => (update(workoutSessions)..where((table) => table.id.equals(id))).write(
+    WorkoutSessionsCompanion(
+      status: const Value(SessionStatus.active),
+      pausedDuration: Value(pausedDurationSeconds),
+      lastActiveAt: Value(DateTime.now()),
+      updatedAt: Value(DateTime.now()),
+    ),
+  );
 
   Future<List<WorkoutSession>> getRecentSessions(int limit) =>
       (select(workoutSessions)
             ..orderBy([(table) => OrderingTerm.desc(table.startedAt)])
             ..limit(limit))
           .get();
+
+  /// Séances terminées, les plus récentes en premier — pour l'historique.
+  Stream<List<WorkoutSession>> watchCompletedSessions() =>
+      (select(workoutSessions)
+            ..where(
+              (table) => table.status.equalsValue(SessionStatus.completed),
+            )
+            ..orderBy([(table) => OrderingTerm.desc(table.finishedAt)]))
+          .watch();
 
   Future<void> upsertSession(WorkoutSession session) =>
       into(workoutSessions).insertOnConflictUpdate(session);
