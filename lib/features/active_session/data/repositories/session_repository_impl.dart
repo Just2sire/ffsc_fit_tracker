@@ -1,6 +1,7 @@
 import "package:fit_tracker/features/active_session/data/datasources/session_local_datasource.dart";
 import "package:fit_tracker/features/active_session/domain/entities/exercise_set.dart";
 import "package:fit_tracker/features/active_session/domain/entities/session_exercise.dart";
+import "package:fit_tracker/features/active_session/domain/entities/session_exercise_target.dart";
 import "package:fit_tracker/features/active_session/domain/entities/workout_session.dart";
 import "package:fit_tracker/features/active_session/domain/exceptions/invalid_session_transition_exception.dart";
 import "package:fit_tracker/features/active_session/domain/repositories/session_repository.dart";
@@ -113,6 +114,12 @@ class SessionRepositoryImpl implements SessionRepository {
     String exerciseId, {
     int limit = 5,
   }) => datasource.getExerciseHistory(exerciseId, limit: limit);
+
+  @override
+  Future<SessionExerciseTarget?> getTargetForExercise(
+    String workoutDayId,
+    String exerciseId,
+  ) => datasource.getTargetForExercise(workoutDayId, exerciseId);
 
   Future<WorkoutSession> _requireSession(String id) async {
     final session = await datasource.getSessionById(id);

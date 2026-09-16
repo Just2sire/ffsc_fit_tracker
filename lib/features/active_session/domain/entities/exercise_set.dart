@@ -24,4 +24,29 @@ class ExerciseSet {
   final int? rpe;
   final String? notes;
   final DateTime? completedAt;
+
+  ExerciseSet copyWith({
+    double? weight,
+    int? reps,
+    bool? isCompleted,
+    String? targetReps,
+    double? targetWeight,
+    int? rpe,
+    String? notes,
+    DateTime? completedAt,
+  }) {
+    return ExerciseSet(
+      id: id,
+      sessionExerciseId: sessionExerciseId,
+      setNumber: setNumber,
+      weight: weight ?? this.weight,
+      reps: reps ?? this.reps,
+      isCompleted: isCompleted ?? this.isCompleted,
+      targetReps: targetReps ?? this.targetReps,
+      targetWeight: targetWeight ?? this.targetWeight,
+      rpe: rpe ?? this.rpe,
+      notes: notes ?? this.notes,
+      completedAt: completedAt ?? this.completedAt,
+    );
+  }
 }

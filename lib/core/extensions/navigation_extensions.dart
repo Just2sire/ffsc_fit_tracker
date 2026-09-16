@@ -29,6 +29,11 @@ extension NavigationExtensions on BuildContext {
   void pushToProgramNew() => push(AppRoutes.programNew);
   void pushToProgramEdit(String id) => push(AppRoutes.programEditPath(id));
 
+  // ─── Séance active ────────────────────────
+  void pushToStartSession(String workoutDayId) =>
+      push(AppRoutes.activeSessionStartPath(workoutDayId));
+  void pushToActiveSession() => push(AppRoutes.activeSession);
+
   // ─── Retour ───────────────────────────────
 
   void popScreen<T extends Object?>([T? result]) {

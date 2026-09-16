@@ -101,10 +101,19 @@ class ProgramDetailPage extends ConsumerWidget {
               SizedBox(
                 width: double.infinity,
                 height: AppSpacing.buttonHeightLg,
-                child: FilledButton.icon(
-                  onPressed: null, // sera câblé en M-06
-                  icon: const Icon(LucideIcons.play),
-                  label: const Text("Démarrer la séance"),
+                child: daysAsync.maybeWhen(
+                  data: (days) => FilledButton.icon(
+                    onPressed: days.isEmpty
+                        ? null
+                        : () => context.pushToStartSession(days.first.id),
+                    icon: const Icon(LucideIcons.play),
+                    label: const Text("Démarrer la séance"),
+                  ),
+                  orElse: () => FilledButton.icon(
+                    onPressed: null,
+                    icon: const Icon(LucideIcons.play),
+                    label: const Text("Démarrer la séance"),
+                  ),
                 ),
               ),
             ],

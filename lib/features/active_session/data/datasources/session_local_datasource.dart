@@ -1,9 +1,11 @@
 import "package:uuid/uuid.dart";
 
+import "../../../../core/utils/progression_engine.dart";
 import "../../../../shared/data/database/app_database.dart";
 import "../../../../shared/domain/enums/index.dart";
 import "../../domain/entities/exercise_set.dart" as entity;
 import "../../domain/entities/session_exercise.dart" as entity;
+import "../../domain/entities/session_exercise_target.dart" as entity;
 import "../../domain/entities/workout_session.dart" as entity;
 
 class SessionLocalDatasource {
@@ -55,9 +57,10 @@ class SessionLocalDatasource {
       );
       if (exercise == null) continue;
 
+      final sessionExerciseId = _uuid.v4();
       await _database.sessionExerciseDao.upsertSessionExercise(
         SessionExercise(
-          id: _uuid.v4(),
+          id: sessionExerciseId,
           sessionId: sessionId,
           exerciseId: exercise.id,
           exerciseNameSnapshot: exercise.name,
@@ -68,6 +71,38 @@ class SessionLocalDatasource {
           updatedAt: now,
         ),
       );
+
+      final history = await getExerciseHistory(exercise.id);
+      final suggestion = ProgressionEngine.suggest(
+        pastSessions: history,
+        targetRepsMin: programExercise.targetRepsMin,
+        targetRepsMax: programExercise.targetRepsMax,
+        equipment: exercise.equipment,
+        primaryMuscle: exercise.muscleGroup,
+      );
+      final suggestedWeight = exercise.equipment == Equipment.bodyweight
+          ? 0.0
+          : (suggestion.suggestedWeight ?? 0.0);
+      final targetReps =
+          "${programExercise.targetRepsMin}-${programExercise.targetRepsMax}";
+
+      for (
+        var setNumber = 1;
+        setNumber <= programExercise.targetSets;
+        setNumber++
+      ) {
+        await _database.exerciseSetDao.insertSet(
+          ExerciseSet(
+            id: _uuid.v4(),
+            sessionExerciseId: sessionExerciseId,
+            setNumber: setNumber,
+            weight: suggestedWeight,
+            reps: 0,
+            isCompleted: false,
+            targetReps: targetReps,
+          ),
+        );
+      }
     }
 
     return (await getSessionById(sessionId))!;
@@ -153,6 +188,24 @@ class SessionLocalDatasource {
       }
     }
     return history;
+  }
+
+  Future<entity.SessionExerciseTarget?> getTargetForExercise(
+    String workoutDayId,
+    String exerciseId,
+  ) async {
+    final programExercises = await _database.programExerciseDao
+        .getExercisesForDay(workoutDayId);
+    for (final programExercise in programExercises) {
+      if (programExercise.exerciseId == exerciseId) {
+        return entity.SessionExerciseTarget(
+          targetRepsMin: programExercise.targetRepsMin,
+          targetRepsMax: programExercise.targetRepsMax,
+          restTimeSeconds: programExercise.restTimeSeconds,
+        );
+      }
+    }
+    return null;
   }
 
   entity.WorkoutSession _sessionToDomain(WorkoutSession row) {

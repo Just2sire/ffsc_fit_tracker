@@ -3,6 +3,7 @@ import "package:go_router/go_router.dart";
 import "package:lucide_icons_flutter/lucide_icons.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
+import "../../features/active_session/presentation/pages/active_session_page.dart";
 import "../../features/exercise_library/presentation/pages/exercise_detail_page.dart";
 import "../../features/exercise_library/presentation/pages/exercise_library_page.dart";
 import "../../features/home/presentation/pages/home_page.dart";
@@ -95,6 +96,19 @@ GoRouter appRouter(Ref ref) {
             context: context,
             state: state,
             child: ProgramDetailPage(id: id),
+          );
+        },
+      ),
+
+      // ─── Séance active (hors shell) ──────────
+      GoRoute(
+        path: AppRoutes.activeSession,
+        pageBuilder: (context, state) {
+          final workoutDayId = state.uri.queryParameters["dayId"];
+          return AppTransitions.pushedScreen(
+            context: context,
+            state: state,
+            child: ActiveSessionPage(workoutDayId: workoutDayId),
           );
         },
       ),

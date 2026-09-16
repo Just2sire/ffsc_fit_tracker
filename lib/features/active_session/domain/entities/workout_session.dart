@@ -1,4 +1,4 @@
-import "package:fit_tracker/shared/domain/enums/index.dart";
+import "../../../../shared/domain/enums/session_status.dart";
 
 class WorkoutSession {
   const WorkoutSession({

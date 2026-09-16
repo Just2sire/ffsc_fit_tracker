@@ -23,4 +23,9 @@ class AppRoutes {
   static String programDetailPath(String id) => "/programs/$id";
   static const String programEdit = "/programs/:id/edit";
   static String programEditPath(String id) => "/programs/$id/edit";
+
+  // ─── Séance active ────────────────────────
+  static const String activeSession = "/active-session";
+  static String activeSessionStartPath(String workoutDayId) =>
+      "/active-session?dayId=$workoutDayId";
 }

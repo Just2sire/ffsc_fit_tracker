@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
+import "../../../../core/utils/session_timer_calculator.dart";
 import "../../../../shared/domain/enums/index.dart";
 import "../../../../shared/presentation/providers/database_providers.dart";
 import "../../data/datasources/session_local_datasource.dart";
@@ -28,6 +29,28 @@ SessionRepository sessionRepository(Ref ref) {
 Future<WorkoutSession?> pendingRecovery(Ref ref) {
   final repository = ref.watch(sessionRepositoryProvider);
   return RecoverSessionUseCase(repository).call();
+}
+
+@riverpod
+Stream<Duration> sessionElapsedTime(Ref ref) async* {
+  final session = ref.watch(activeSessionProvider).value;
+  if (session == null) {
+    yield Duration.zero;
+    return;
+  }
+
+  Duration compute() => SessionTimerCalculator.effectiveDuration(
+    startedAt: session.startedAt,
+    pausedDurationSeconds: session.pausedDurationSeconds,
+    finishedAt: session.status == SessionStatus.paused
+        ? session.lastActiveAt
+        : session.finishedAt,
+  );
+
+  yield compute();
+  if (session.status != SessionStatus.active) return;
+
+  yield* Stream.periodic(const Duration(seconds: 1), (_) => compute());
 }
 
 @Riverpod(keepAlive: true)

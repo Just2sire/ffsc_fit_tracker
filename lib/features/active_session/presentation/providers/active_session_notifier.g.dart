@@ -95,6 +95,41 @@ final class PendingRecoveryProvider
 
 String _$pendingRecoveryHash() => r'54b9c26075c73e7cfd3c4182b1ece6d5a01dedba';
 
+@ProviderFor(sessionElapsedTime)
+final sessionElapsedTimeProvider = SessionElapsedTimeProvider._();
+
+final class SessionElapsedTimeProvider
+    extends
+        $FunctionalProvider<AsyncValue<Duration>, Duration, Stream<Duration>>
+    with $FutureModifier<Duration>, $StreamProvider<Duration> {
+  SessionElapsedTimeProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'sessionElapsedTimeProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$sessionElapsedTimeHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<Duration> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<Duration> create(Ref ref) {
+    return sessionElapsedTime(ref);
+  }
+}
+
+String _$sessionElapsedTimeHash() =>
+    r'4e3e4ca0ddedeb2b677eb487a757778a202af16c';
+
 @ProviderFor(ActiveSessionNotifier)
 final activeSessionProvider = ActiveSessionNotifierProvider._();
 

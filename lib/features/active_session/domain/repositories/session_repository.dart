@@ -1,5 +1,6 @@
 import "package:fit_tracker/features/active_session/domain/entities/exercise_set.dart";
 import "package:fit_tracker/features/active_session/domain/entities/session_exercise.dart";
+import "package:fit_tracker/features/active_session/domain/entities/session_exercise_target.dart";
 import "package:fit_tracker/features/active_session/domain/entities/workout_session.dart";
 
 abstract class SessionRepository {
@@ -22,4 +23,9 @@ abstract class SessionRepository {
     String exerciseId, {
     int limit = 5,
   });
+
+  Future<SessionExerciseTarget?> getTargetForExercise(
+    String workoutDayId,
+    String exerciseId,
+  );
 }

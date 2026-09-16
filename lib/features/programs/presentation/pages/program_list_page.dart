@@ -18,21 +18,10 @@ class ProgramListPage extends ConsumerWidget {
     final programsAsync = ref.watch(programsStreamProvider);
 
     return AppScaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        shape: const RoundedRectangleBorder(borderRadius: AppSpacing.roundedLg),
-        tooltip: "Nouveau programme",
-        onPressed: () => context.pushToProgramNew(),
-        label: Text(
-          "Nouveau programme",
-          style: context.textTheme.bodyLarge!.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        icon: const Icon(LucideIcons.plus, size: AppSpacing.iconLg),
-      ),
       body: Column(
         children: [
           const AppTopbar(title: "Programmes"),
+          AppSpacing.gapVSm,
           Expanded(
             child: programsAsync.when(
               data: (programs) {
@@ -42,7 +31,7 @@ class ProgramListPage extends ConsumerWidget {
                     bottom: AppSpacing.bottomScrollablePadding,
                   ),
                   itemCount: programs.length,
-                  separatorBuilder: (_, _) => AppSpacing.gapVSm,
+                  separatorBuilder: (_, _) => AppSpacing.gapVMd,
                   itemBuilder: (context, index) {
                     final program = programs[index];
                     return ProgramCard(
@@ -72,6 +61,15 @@ class ProgramListPage extends ConsumerWidget {
               },
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (e, _) => Center(child: Text("Erreur : $e")),
+            ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () => context.pushToProgramNew(),
+              label: const Text("Ajouter un programme"),
+              icon: const Icon(LucideIcons.plus, size: AppSpacing.iconLg),
+              iconAlignment: .start,
             ),
           ),
         ],
