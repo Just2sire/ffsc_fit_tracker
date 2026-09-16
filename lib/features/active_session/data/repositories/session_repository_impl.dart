@@ -13,8 +13,7 @@ class SessionRepositoryImpl implements SessionRepository {
   final SessionLocalDatasource datasource;
 
   @override
-  Future<WorkoutSession?> findActiveSession() =>
-      datasource.findActiveSession();
+  Future<WorkoutSession?> findActiveSession() => datasource.findActiveSession();
 
   @override
   Future<WorkoutSession?> getSessionById(String id) =>
