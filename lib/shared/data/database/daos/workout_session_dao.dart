@@ -45,6 +45,28 @@ class WorkoutSessionDao extends DatabaseAccessor<AppDatabase>
         WorkoutSessionsCompanion(lastActiveAt: Value(DateTime.now())),
       );
 
+  Future<void> completeSession(String id, DateTime finishedAt) =>
+      (update(workoutSessions)..where((table) => table.id.equals(id))).write(
+        WorkoutSessionsCompanion(
+          status: const Value(SessionStatus.completed),
+          finishedAt: Value(finishedAt),
+          updatedAt: Value(DateTime.now()),
+        ),
+      );
+
+  Future<void> resumeFromPause(
+    String id, {
+    required int pausedDurationSeconds,
+  }) => (update(workoutSessions)..where((table) => table.id.equals(id)))
+      .write(
+        WorkoutSessionsCompanion(
+          status: const Value(SessionStatus.active),
+          pausedDuration: Value(pausedDurationSeconds),
+          lastActiveAt: Value(DateTime.now()),
+          updatedAt: Value(DateTime.now()),
+        ),
+      );
+
   Future<List<WorkoutSession>> getRecentSessions(int limit) =>
       (select(workoutSessions)
             ..orderBy([(table) => OrderingTerm.desc(table.startedAt)])

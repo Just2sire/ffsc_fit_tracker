@@ -4,6 +4,7 @@ import "package:lucide_icons_flutter/lucide_icons.dart";
 
 import "../../../../core/extensions/build_context_extensions.dart";
 import "../../../../core/extensions/navigation_extensions.dart";
+import "../../../../core/extensions/string_extensions.dart";
 import "../../../../core/theme/app_spacing.dart";
 import "../../../../shared/presentation/widgets/index.dart" show AppScaffold, AppTopbar;
 import "../../../programs/presentation/providers/program_provider.dart";
@@ -25,6 +26,19 @@ class HomePage extends ConsumerWidget {
 
     return AppScaffold(
       scrollable: true,
+      floatingActionButton: FloatingActionButton.extended(
+        shape: const RoundedRectangleBorder(borderRadius: AppSpacing.roundedLg),
+        tooltip: "Nouveau programme",
+        onPressed: () => context.pushToProgramNew(),
+        label: Text(
+          "Nouveau programme",
+          style: context.textTheme.bodyLarge!.copyWith(
+            color: context.colorScheme.onPrimary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        icon: const Icon(LucideIcons.plus, size: AppSpacing.iconLg),
+      ),
       body: Column(
         spacing: AppSpacing.sm,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,23 +144,29 @@ class _StatItem extends StatelessWidget {
     final textTheme = context.textTheme;
 
     return Column(
+      crossAxisAlignment: .start,
       mainAxisSize: MainAxisSize.min,
       spacing: AppSpacing.xs,
       children: [
-        Icon(
-          icon,
-          size: AppSpacing.iconMd,
-          color: colorScheme.accentForeground,
+        Row(
+          mainAxisAlignment: .spaceBetween,
+          children: [
+            Text(
+              value,
+              style: textTheme.headlineLarge?.copyWith(
+                color: colorScheme.accentForeground,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            Icon(
+              icon,
+              size: AppSpacing.iconLg,
+              color: colorScheme.accentForeground,
+            ),
+          ],
         ),
         Text(
-          value,
-          style: textTheme.headlineMedium?.copyWith(
-            color: colorScheme.accentForeground,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        Text(
-          label,
+          label.capitalize,
           style: textTheme.bodySmall,
           textAlign: TextAlign.center,
         ),
