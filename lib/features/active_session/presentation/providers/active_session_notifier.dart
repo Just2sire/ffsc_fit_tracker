@@ -31,6 +31,11 @@ Future<WorkoutSession?> pendingRecovery(Ref ref) {
   return RecoverSessionUseCase(repository).call();
 }
 
+/// Séances terminées, les plus récentes en premier — pour l'historique.
+@riverpod
+Stream<List<WorkoutSession>> completedSessions(Ref ref) =>
+    ref.watch(sessionRepositoryProvider).watchCompletedSessions();
+
 @riverpod
 Stream<Duration> sessionElapsedTime(Ref ref) async* {
   final session = ref.watch(activeSessionProvider).value;

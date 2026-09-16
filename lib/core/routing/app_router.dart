@@ -4,6 +4,7 @@ import "package:lucide_icons_flutter/lucide_icons.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
 import "../../features/active_session/presentation/pages/active_session_page.dart";
+import "../../features/active_session/presentation/pages/session_history_page.dart";
 import "../../features/exercise_library/presentation/pages/exercise_detail_page.dart";
 import "../../features/exercise_library/presentation/pages/exercise_library_page.dart";
 import "../../features/home/presentation/pages/home_page.dart";
@@ -150,7 +151,7 @@ GoRouter appRouter(Ref ref) {
                 pageBuilder: (context, state) => AppTransitions.fade(
                   context: context,
                   state: state,
-                  child: const _Placeholder(title: "Historique"),
+                  child: const SessionHistoryPage(),
                 ),
               ),
             ],
@@ -180,11 +181,7 @@ class _AppShell extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 
   static const _destinations = [
-    (
-      icon: LucideIcons.house,
-      selectedIcon: LucideIcons.house,
-      label: "Home",
-    ),
+    (icon: LucideIcons.house, selectedIcon: LucideIcons.house, label: "Home"),
     (
       icon: LucideIcons.dumbbell,
       selectedIcon: LucideIcons.dumbbell,

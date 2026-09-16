@@ -20,6 +20,10 @@ class SessionRepositoryImpl implements SessionRepository {
       datasource.getSessionById(id);
 
   @override
+  Stream<List<WorkoutSession>> watchCompletedSessions() =>
+      datasource.watchCompletedSessions();
+
+  @override
   Future<WorkoutSession> startSession(String workoutDayId) async {
     final existing = await datasource.findActiveSession();
     if (existing != null) {
