@@ -23,10 +23,12 @@ part "app_router.g.dart";
 
 /// GoRouter global de FitTracker.
 ///
-/// Structure minimale, en attendant les vraies features :
 /// - `/` → onboarding (une seule fois, pas de persistance pour l'instant).
-/// - `StatefulShellRoute.indexedStack` à 4 branches : `/home`, `/exercises`,
-///   `/history`, `/profile` — chaque écran est un placeholder texte centré.
+/// - `StatefulShellRoute.indexedStack` à 3 branches : `/home`, `/exercises`,
+///   `/history`.
+///
+/// `/profile` reste défini dans [AppRoutes] mais n'est plus dans la bottom
+/// nav — écran pas encore implémenté (hors scope de ce module).
 ///
 /// Pas d'auth (Drift = stockage local, pas de backend) : aucune route
 /// `/auth/**`.
@@ -156,25 +158,13 @@ GoRouter appRouter(Ref ref) {
               ),
             ],
           ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.profile,
-                pageBuilder: (context, state) => AppTransitions.fade(
-                  context: context,
-                  state: state,
-                  child: const _Placeholder(title: "Profil"),
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     ],
   );
 }
 
-/// Coquille des 4 onglets — placeholder texte centré par onglet.
+/// Coquille des onglets — Home, Exercices, Historique.
 class _AppShell extends StatelessWidget {
   const _AppShell({required this.navigationShell});
 
@@ -191,11 +181,6 @@ class _AppShell extends StatelessWidget {
       icon: LucideIcons.rotateCcwClock,
       selectedIcon: LucideIcons.rotateCcwClock,
       label: "Historique",
-    ),
-    (
-      icon: LucideIcons.userRound,
-      selectedIcon: LucideIcons.userRound,
-      label: "Profil",
     ),
   ];
 
@@ -218,31 +203,6 @@ class _AppShell extends StatelessWidget {
               label: d.label,
             ),
         ],
-      ),
-    );
-  }
-}
-
-/// Écran placeholder — texte centré, en attendant l'implémentation réelle.
-class _Placeholder extends StatelessWidget {
-  const _Placeholder({required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title), elevation: 0),
-      body: Center(
-        child: Padding(
-          padding: AppSpacing.screenPaddingH,
-          child: Text(
-            "$title — bientôt.",
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium
-                ?.copyWith(color: AppColors.textSecondary),
-          ),
-        ),
       ),
     );
   }
