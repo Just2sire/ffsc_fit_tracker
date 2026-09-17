@@ -16,7 +16,6 @@ extension NavigationExtensions on BuildContext {
   void goHome() => go(AppRoutes.home);
   void goExercises() => go(AppRoutes.exercises);
   void goHistory() => go(AppRoutes.history);
-  void goProfile() => go(AppRoutes.profile);
 
   // ─── Exercices ───────────────────────────
   void pushToExerciseDetail(String id) =>
@@ -24,8 +23,7 @@ extension NavigationExtensions on BuildContext {
 
   // ─── Programmes ──────────────────────────
   void pushToPrograms() => push(AppRoutes.programs);
-  void pushToProgramDetail(String id) =>
-      push(AppRoutes.programDetailPath(id));
+  void pushToProgramDetail(String id) => push(AppRoutes.programDetailPath(id));
   void pushToProgramNew() => push(AppRoutes.programNew);
   void pushToProgramEdit(String id) => push(AppRoutes.programEditPath(id));
 

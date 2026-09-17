@@ -10,10 +10,12 @@ part of 'app_router.dart';
 // ignore_for_file: type=lint, type=warning
 /// GoRouter global de FitTracker.
 ///
-/// Structure minimale, en attendant les vraies features :
 /// - `/` → onboarding (une seule fois, pas de persistance pour l'instant).
-/// - `StatefulShellRoute.indexedStack` à 4 branches : `/home`, `/exercises`,
-///   `/history`, `/profile` — chaque écran est un placeholder texte centré.
+/// - `StatefulShellRoute.indexedStack` à 3 branches : `/home`, `/exercises`,
+///   `/history`.
+///
+/// `/profile` reste défini dans [AppRoutes] mais n'est plus dans la bottom
+/// nav — écran pas encore implémenté (hors scope de ce module).
 ///
 /// Pas d'auth (Drift = stockage local, pas de backend) : aucune route
 /// `/auth/**`.
@@ -23,10 +25,12 @@ final appRouterProvider = AppRouterProvider._();
 
 /// GoRouter global de FitTracker.
 ///
-/// Structure minimale, en attendant les vraies features :
 /// - `/` → onboarding (une seule fois, pas de persistance pour l'instant).
-/// - `StatefulShellRoute.indexedStack` à 4 branches : `/home`, `/exercises`,
-///   `/history`, `/profile` — chaque écran est un placeholder texte centré.
+/// - `StatefulShellRoute.indexedStack` à 3 branches : `/home`, `/exercises`,
+///   `/history`.
+///
+/// `/profile` reste défini dans [AppRoutes] mais n'est plus dans la bottom
+/// nav — écran pas encore implémenté (hors scope de ce module).
 ///
 /// Pas d'auth (Drift = stockage local, pas de backend) : aucune route
 /// `/auth/**`.
@@ -36,10 +40,12 @@ final class AppRouterProvider
     with $Provider<GoRouter> {
   /// GoRouter global de FitTracker.
   ///
-  /// Structure minimale, en attendant les vraies features :
   /// - `/` → onboarding (une seule fois, pas de persistance pour l'instant).
-  /// - `StatefulShellRoute.indexedStack` à 4 branches : `/home`, `/exercises`,
-  ///   `/history`, `/profile` — chaque écran est un placeholder texte centré.
+  /// - `StatefulShellRoute.indexedStack` à 3 branches : `/home`, `/exercises`,
+  ///   `/history`.
+  ///
+  /// `/profile` reste défini dans [AppRoutes] mais n'est plus dans la bottom
+  /// nav — écran pas encore implémenté (hors scope de ce module).
   ///
   /// Pas d'auth (Drift = stockage local, pas de backend) : aucune route
   /// `/auth/**`.
@@ -76,4 +82,4 @@ final class AppRouterProvider
   }
 }
 
-String _$appRouterHash() => r'd22e32fda56ed49b0072a790051f9b5128211d0a';
+String _$appRouterHash() => r'7a6939b56eaefb384e7090c28b302a2352bfd18e';
